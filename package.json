@@ -15,7 +15,7 @@
     "commander": "^12.1.0"
   },
   "bin": {
-	  "backman-ts": "ts-node ./backman.ts"
+	  "backman-ts": "./backman.ts"
 }
 
 }
