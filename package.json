@@ -1,7 +1,8 @@
 {
-  "name": "soundrepository",
+  "name": "backman-ts",
   "module": "backman.ts",
   "type": "module",
+  "version": "1.0.2",
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -12,5 +13,9 @@
     "@inquirer/prompts": "^7.2.0",
     "axios": "^1.7.9",
     "commander": "^12.1.0"
-  }
+  },
+  "bin": {
+	  "backman-ts": "ts-node ./backman.ts"
+}
+
 }
