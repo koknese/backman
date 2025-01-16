@@ -25,8 +25,18 @@ program
 
           axios.get(url, { responseType: 'stream' })
             .then((response) => {
+              console.log(">>> Initiating download...")
               const file = fs.createWriteStream(`${path}/${filename}`);
               response.data.pipe(file);
+
+              const totalSize = response.headers['content-length'];
+              let downloadedSize = 0;
+
+              response.data.on('data', (chunk) => {
+                downloadedSize += chunk.length;
+                const progress = (downloadedSize / totalSize) * 100;
+                process.stdout.write(`>>> Downloading ${chalk.green(filename)} (${progress.toFixed(1)}%) \r` );
+              });
             
               file.on('finish', () => {
                 file.close();
@@ -94,6 +104,22 @@ program
       axios.get(file.url, { responseType: 'stream' })
         .then((response) => {
           const writeStream = fs.createWriteStream(`${path}/${file.name}`);
+
+          const totalSize = response.headers['content-length'];
+          let downloadedSize = 0
+
+          console.log(`>>> Initiating download...`)
+
+          response.data.on('data', (chunk) => {
+            downloadedSize += chunk.length;
+            const progress = (downloadedSize / totalSize) * 100;
+            let lastProgress = 0
+            if (progress - lastProgress >= 1) { 
+              process.stdout.write(`>>> Downloading ${chalk.green(file.name)} (${progress.toFixed(1)}%) \r` );
+              lastProgress = progress;
+            }
+          });
+
           response.data.pipe(writeStream).on('finish', () => {
             downloadedFiles++
             console.log(">>> Downloaded" + ` (${chalk.green(downloadedFiles)} of ${chalk.green(parsedJson.length)}) ` + chalk.green(file.name));
