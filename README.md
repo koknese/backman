@@ -14,7 +14,7 @@ bun install
 * Compile:
 
 ```bash
-bun build ./back.ts --compile --outfile backman
+bun build ./backman.ts --compile --outfile backman
 ```
 * Optional: Move into the /usr/bin folder for easy access from anywhere
 ```bash
